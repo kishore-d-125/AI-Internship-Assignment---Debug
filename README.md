@@ -2,6 +2,16 @@
 
 A professional blood test analysis system built with CrewAI that provides comprehensive medical insights, nutritional recommendations, and exercise planning based on blood test reports.
 
+---
+
+## ⚠️ Important Notice
+
+- **Web search and advanced CrewAI tools are currently disabled** due to the `crewai_tools` dependency not being installed (Windows build issues with `chroma-hnswlib`).
+- **Core features (PDF analysis, medical/nutrition/exercise agents) work fully.**
+- If you want web search or advanced CrewAI tools, see the troubleshooting section for installation help.
+
+---
+
 ## 🐛 Bugs Found and Fixed
 
 ### Critical Bugs Fixed:
@@ -38,7 +48,9 @@ A professional blood test analysis system built with CrewAI that provides compre
    - **Bug**: No validation for uploaded file types
    - **Fix**: Added PDF file type validation
 
-## 🚀 Features
+---
+
+## 🚀 Features (Working Now)
 
 - **Comprehensive Blood Test Analysis**: Professional medical interpretation of blood markers
 - **Nutritional Recommendations**: Evidence-based dietary guidance based on blood results
@@ -47,12 +59,13 @@ A professional blood test analysis system built with CrewAI that provides compre
 - **RESTful API**: Easy integration with web and mobile applications
 - **Professional Medical Standards**: All recommendations follow evidence-based medical guidelines
 
+---
+
 ## 🛠️ Setup Instructions
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.10, 3.11, or 3.12 (CrewAI does not support Python 3.14+)
 - OpenAI API key
-- Optional: Serper API key for web search functionality
 
 ### Installation
 
@@ -71,10 +84,8 @@ A professional blood test analysis system built with CrewAI that provides compre
    ```bash
    # Copy the example environment file
    cp env_example.txt .env
-   
    # Edit .env and add your API keys
    OPENAI_API_KEY=your_openai_api_key_here
-   SERPER_API_KEY=your_serper_api_key_here  # Optional
    ```
 
 4. **Run the application**
@@ -83,6 +94,8 @@ A professional blood test analysis system built with CrewAI that provides compre
    ```
 
 The API will be available at `http://localhost:8000`
+
+---
 
 ## 📚 API Documentation
 
@@ -124,6 +137,8 @@ curl -X POST "http://localhost:8000/analyze" \
 - `400 Bad Request`: Invalid file type or missing file
 - `500 Internal Server Error`: Processing error or API configuration issues
 
+---
+
 ## 🏗️ Architecture
 
 ### Components
@@ -148,6 +163,8 @@ curl -X POST "http://localhost:8000/analyze" \
 4. **API** (`main.py`)
    - FastAPI server with file upload and analysis endpoints
 
+---
+
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -155,7 +172,6 @@ curl -X POST "http://localhost:8000/analyze" \
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `OPENAI_API_KEY` | OpenAI API key for LLM access | Yes |
-| `SERPER_API_KEY` | Serper API key for web search | No |
 
 ### Model Configuration
 
@@ -168,6 +184,8 @@ llm = ChatOpenAI(
     api_key=os.getenv("OPENAI_API_KEY")
 )
 ```
+
+---
 
 ## 🧪 Testing
 
@@ -187,9 +205,11 @@ llm = ChatOpenAI(
    - Test with invalid API keys
    - Test with corrupted PDF files
 
+---
+
 ## 🔮 Future Enhancements
 
-### Planned Features
+### Planned Features (Not Yet Available)
 
 1. **Queue Worker Model**
    - Redis/Celery integration for concurrent request handling
@@ -201,15 +221,11 @@ llm = ChatOpenAI(
    - User management and authentication
    - Historical analysis tracking
 
-3. **Advanced Analytics**
-   - Trend analysis over multiple reports
-   - Predictive health insights
-   - Integration with health tracking devices
+3. **Web Search & Advanced CrewAI Tools**
+   - Requires successful installation of `crewai_tools` and dependencies
+   - See troubleshooting below for help
 
-4. **Enhanced Security**
-   - HIPAA compliance features
-   - Data encryption
-   - Audit logging
+---
 
 ## 🤝 Contributing
 
@@ -219,15 +235,21 @@ llm = ChatOpenAI(
 4. Add tests if applicable
 5. Submit a pull request
 
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
 
 ## ⚠️ Disclaimer
 
 This system provides AI-powered analysis and recommendations but should not replace professional medical advice. Always consult with qualified healthcare providers for medical decisions.
 
-## 🆘 Support
+---
+
+## 🆘 Support & Troubleshooting
 
 For issues and questions:
 1. Check the troubleshooting section below
@@ -249,4 +271,15 @@ For issues and questions:
 
 4. **"Import errors"**
    - Run `pip install -r requirements.txt` to install all dependencies
-   - Ensure you're using Python 3.8+
+   - Ensure you're using Python 3.10, 3.11, or 3.12
+
+5. **"Cannot install crewai_tools or chroma-hnswlib"**
+   - On Windows, ensure you have [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) with the "Desktop development with C++" workload
+   - Restart your computer after installation
+   - Try installing with:
+     ```bash
+     pip install crewai-tools
+     ```
+   - If it still fails, core features will work, but web search and advanced tools will be unavailable
+
+---
