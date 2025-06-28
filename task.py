@@ -20,7 +20,6 @@ help_patients = Task(
 - References to current medical guidelines where applicable""",
 
     agent=doctor,
-    tools=[BloodTestReportTool().read_data_tool],
     async_execution=False,
 )
 
@@ -40,7 +39,6 @@ nutrition_analysis = Task(
 - Evidence-based recommendations with scientific backing""",
 
     agent=nutritionist,
-    tools=[BloodTestReportTool().read_data_tool],
     async_execution=False,
 )
 
@@ -60,7 +58,6 @@ exercise_planning = Task(
 - Monitoring and progression guidelines""",
 
     agent=exercise_specialist,
-    tools=[BloodTestReportTool().read_data_tool],
     async_execution=False,
 )
 
@@ -78,6 +75,5 @@ verification = Task(
 - Quality assessment of the laboratory report""",
 
     agent=verifier,
-    tools=[BloodTestReportTool().read_data_tool],
     async_execution=False
 )

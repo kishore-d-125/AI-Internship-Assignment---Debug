@@ -36,7 +36,7 @@ async def analyze_blood_report(
     """Analyze blood test report and provide comprehensive health recommendations"""
     
     # Validate file type
-    if not file.filename.lower().endswith('.pdf'):
+    if not file.filename or not file.filename.lower().endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
     
     # Generate unique filename to avoid conflicts
@@ -79,4 +79,4 @@ async def analyze_blood_report(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
