@@ -1,6 +1,7 @@
 ## Importing libraries and files
 import os
 from dotenv import load_dotenv
+from pydantic import SecretStr
 load_dotenv()
 
 from crewai.agent import Agent
@@ -10,10 +11,14 @@ from tools import search_tool, BloodTestReportTool
 
 ### Loading LLM
 # Initialize OpenAI LLM - requires OPENAI_API_KEY in .env file
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY environment variable is required")
+
 llm = ChatOpenAI(
     model="gpt-3.5-turbo",
     temperature=0.7,
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=SecretStr(api_key)
 )
 
 # Creating an Experienced Doctor agent
@@ -21,7 +26,6 @@ doctor = Agent(
     role="Senior Medical Doctor and Blood Test Analyst",
     goal="Provide accurate, professional analysis of blood test reports and offer evidence-based medical recommendations for the query: {query}",
     verbose=True,
-    memory=True,
     backstory=(
         "You are a board-certified physician with over 15 years of experience in internal medicine and laboratory medicine. "
         "You specialize in interpreting blood test results and providing evidence-based medical advice. "
@@ -29,7 +33,6 @@ doctor = Agent(
         "You always prioritize patient safety and provide recommendations based on established medical protocols. "
         "You communicate complex medical information in a clear, understandable manner while maintaining professional standards."
     ),
-    tools=[BloodTestReportTool().read_data_tool],
     llm=llm,
     max_iter=3,
     max_rpm=10,
@@ -41,7 +44,6 @@ verifier = Agent(
     role="Medical Document Verification Specialist",
     goal="Verify that uploaded documents are valid blood test reports and contain relevant medical information for analysis",
     verbose=True,
-    memory=True,
     backstory=(
         "You are a certified medical records specialist with expertise in laboratory documentation. "
         "You have worked in hospital laboratories and medical record departments for over 10 years. "

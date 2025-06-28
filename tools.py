@@ -3,12 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from crewai_tools import tools
-from crewai_tools.tools.serper_dev_tool import SerperDevTool
 from langchain_community.document_loaders import PyPDFLoader
-
-## Creating search tool
-search_tool = SerperDevTool()
 
 ## Creating custom pdf reader tool
 class BloodTestReportTool():
@@ -26,18 +21,23 @@ class BloodTestReportTool():
 
             full_report = ""
             for data in docs:
-                # Clean and format the report data
-                content = data.page_content
-                
-                # Remove extra whitespaces and format properly
-                while "\n\n" in content:
-                    content = content.replace("\n\n", "\n")
-                    
-                full_report += content + "\n"
-                
+                # Clean and format the text
+                text = data.page_content.strip()
+                full_report += text + "\n\n"
+
             return full_report
         except Exception as e:
             return f"Error reading PDF file: {str(e)}"
+
+# Create a simple search tool placeholder
+class SimpleSearchTool():
+    def search(self, query):
+        """Simple search tool placeholder"""
+        return f"Search results for: {query} (Note: Web search functionality requires crewai_tools)"
+
+# Initialize tools
+blood_test_tool = BloodTestReportTool()
+search_tool = SimpleSearchTool()
 
 ## Creating Nutrition Analysis Tool
 class NutritionTool:
